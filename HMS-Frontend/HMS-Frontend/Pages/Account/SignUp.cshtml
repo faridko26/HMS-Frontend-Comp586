@@ -1,0 +1,112 @@
+﻿@page "/Account/SignUp"
+@model Hospital.Frontend.Pages.Account.SignUpModel
+@{
+    ViewData["Title"] = "Sign up";
+}
+
+
+<div class="auth-split">
+    <!-- LEFT: Branding (same as Sign in) -->
+    <section class="auth-left">
+        <div class="brand">
+            <img src="~/images/healthcare-logo.png" alt="Healthcare logo" class="brand-logo" />
+            <h1>HEALTHCARE</h1>
+            <p>Medical Care</p>
+        </div>
+    </section>
+
+    <!-- RIGHT: Sign-up form (same teal panel & styles) -->
+    <section class="auth-right">
+        <div class="auth-form">
+            <h2 style="margin-top:0;color:#fff;margin-bottom:14px;">Create your account</h2>
+
+            <form method="post" asp-page-handler="Signup" id="signupForm">
+                <div class="field">
+                    <label asp-for="Signup.FirstName">First name</label>
+                    <input asp-for="Signup.FirstName" class="input" />
+                    <span class="validation" asp-validation-for="Signup.FirstName"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Signup.LastName">Last name</label>
+                    <input asp-for="Signup.LastName" class="input" />
+                    <span class="validation" asp-validation-for="Signup.LastName"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Signup.Email">Email</label>
+                    <input asp-for="Signup.Email" class="input" />
+                    <span class="validation" asp-validation-for="Signup.Email"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Signup.PhoneNumber">Phone</label>
+                    <input asp-for="Signup.PhoneNumber" class="input" />
+                    <span class="validation" asp-validation-for="Signup.PhoneNumber"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Signup.Password">Password</label>
+                    <input asp-for="Signup.Password" type="password" class="input" />
+                    <span class="validation" asp-validation-for="Signup.Password"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Signup.Building">Building (optional)</label>
+                    <input asp-for="Signup.Building" class="input" />
+                </div>
+
+                <div class="field">
+                    <label asp-for="Signup.Role">Role</label>
+                    <select asp-for="Signup.Role" class="input" id="roleSelect">
+                        <option value="">-- choose --</option>
+                        <option>Doctor</option>
+                        <option>Nurse</option>
+                        <option>Receptionist</option>
+                        <option>Admin</option>
+                    </select>
+                    <span class="validation" asp-validation-for="Signup.Role"></span>
+                </div>
+
+                <!-- Doctor-only -->
+                <div class="field doctor-only d-none">
+                    <label asp-for="Signup.Specialization">Specialization</label>
+                    <input asp-for="Signup.Specialization" class="input" />
+                </div>
+                <div class="field doctor-only d-none">
+                    <label asp-for="Signup.RoomNumber">Room number</label>
+                    <input asp-for="Signup.RoomNumber" class="input" />
+                </div>
+
+                <!-- Admin-only -->
+                <div class="field admin-only d-none">
+                    <label>Admin permissions (comma-separated)</label>
+                    <input name="AdminPermissionsCsv" class="input" placeholder="ManageUsers,GenerateReports" />
+                </div>
+
+                <button type="submit" class="btn-primary" style="width:100%;margin-top:6px;">Create account</button>
+
+                <div class="links" style="text-align:center;margin-top:14px;">
+                    <span>Already have an account?</span>
+                    <a asp-page="/Index">Sign in</a>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
+
+<partial name="_ValidationScriptsPartial" />
+
+<script>
+    const roleSelect = document.getElementById('roleSelect');
+    const doctorOnly = document.querySelectorAll('.doctor-only');
+    const adminOnly = document.querySelectorAll('.admin-only');
+
+    function toggleRoleFields() {
+      const role = roleSelect.value;
+      doctorOnly.forEach(el => el.classList.toggle('d-none', role !== 'Doctor'));
+      adminOnly.forEach(el => el.classList.toggle('d-none', role !== 'Admin'));
+    }
+    roleSelect?.addEventListener('change', toggleRoleFields);
+    toggleRoleFields();
+</script>

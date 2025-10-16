@@ -1,0 +1,54 @@
+﻿@page "/Account/SignIn"
+@model Hospital.Frontend.Pages.Account.SignInModel
+@{
+    Layout = "_Layout";              // <- force this layout
+    ViewData["Title"] = "Sign in";   // <- title value used by <title>@ViewData["Title"] - Hospital Management System</title>
+}
+
+
+<div class="auth-split">
+    <!-- LEFT: Logo / Branding -->
+    <section class="auth-left">
+        <div class="brand">
+            <!-- Put your logo in wwwroot/images and update the src -->
+            <img src="~/images/healthcare-logo.png" alt="Healthcare logo" class="brand-logo" />
+          
+        </div>
+    </section>
+
+    <!-- RIGHT: Login form -->
+    <section class="auth-right">
+        <div class="auth-form">
+            <form method="post" asp-page-handler="Login">
+                <div class="field">
+                    <label asp-for="Login.Email">Email</label>
+                    <input asp-for="Login.Email" class="input" />
+                    <span class="validation" asp-validation-for="Login.Email"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Login.Password">Password</label>
+                    <input asp-for="Login.Password" type="password" class="input" />
+                    <span class="validation" asp-validation-for="Login.Password"></span>
+                </div>
+
+                <button type="submit" class="btn-primary">Sign in</button>
+
+                <div class="links">
+                    <a asp-page="/ForgotPassword">Forgot password?</a>
+                </div>
+            </form>
+
+            <!-- small divider -->
+            <div class="divider"><span>or</span></div>
+
+            <!-- quick link to Sign up tab/page -->
+            <form method="get" asp-page="/Account/SignUp">
+                <button class="btn-ghost" type="submit">Create an account</button>
+            </form>
+
+        </div>
+    </section>
+</div>
+
+<partial name="_ValidationScriptsPartial" />
