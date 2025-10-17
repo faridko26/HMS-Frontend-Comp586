@@ -11,9 +11,7 @@ public class AuthApiClient : IAuthApiClient
     public Task<HttpResponseMessage> LoginAsync(LoginRequest req)
         => _http.PostAsJsonAsync("api/auth/login", req);
 
-    public Task<HttpResponseMessage> SignupAsync(SignupRequest req)
-        => _http.PostAsJsonAsync("api/auth/signup", req);
-}
+   }
 
 
 //If backend uses different routes (e.g., /api/users/register), just update the two paths above.

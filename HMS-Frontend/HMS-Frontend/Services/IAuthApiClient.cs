@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 public interface IAuthApiClient
 {
     Task<HttpResponseMessage> LoginAsync(LoginRequest req);
-    Task<HttpResponseMessage> SignupAsync(SignupRequest req);
+    
 }
 
 //Add an interface so we can inject a fake
