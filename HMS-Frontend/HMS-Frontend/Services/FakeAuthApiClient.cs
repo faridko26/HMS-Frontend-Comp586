@@ -17,13 +17,5 @@ public class FakeAuthApiClient : IAuthApiClient
         });
     }
 
-    public Task<HttpResponseMessage> SignupAsync(SignupRequest req)
-    {
-        var ok = !string.IsNullOrWhiteSpace(req.FirstName)
-                 && !string.IsNullOrWhiteSpace(req.LastName)
-                 && !string.IsNullOrWhiteSpace(req.Email)
-                 && !string.IsNullOrWhiteSpace(req.Password)
-                 && !string.IsNullOrWhiteSpace(req.Role);
-        return Task.FromResult(new HttpResponseMessage(ok ? HttpStatusCode.Created : HttpStatusCode.BadRequest));
-    }
+    
 }
