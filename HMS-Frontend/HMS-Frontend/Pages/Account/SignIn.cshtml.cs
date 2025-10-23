@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Hospital.Frontend.Pages.Account;
+namespace HMS_Frontend.Pages.Account;
 
 public class SignInModel : PageModel
 {
@@ -25,7 +25,7 @@ public class SignInModel : PageModel
         if (res.IsSuccessStatusCode)
         {
             TempData["Msg"] = "Logged in!";
-            return RedirectToPage("/Dashboard"); // or wherever your homepage is
+            return RedirectToPage("/Receptionist"); // or wherever your homepage is
         }
 
         ModelState.AddModelError(string.Empty, "Invalid email or password.");

@@ -10,7 +10,7 @@ public class FakeAuthApiClient : IAuthApiClient
     {
         var ok = !string.IsNullOrWhiteSpace(req.Email)
                  && req.Email.Contains("@")
-                 && req.Password == "Passw0rd!";
+                 && req.Password == "123456";
         return Task.FromResult(new HttpResponseMessage(ok ? HttpStatusCode.OK : HttpStatusCode.Unauthorized)
         {
             Content = new StringContent(ok ? "{\"token\":\"fake-jwt\"}" : "", Encoding.UTF8, "application/json")
