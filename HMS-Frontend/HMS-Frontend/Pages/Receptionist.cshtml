@@ -1,55 +1,154 @@
 ﻿@page
 @model HMS_Frontend.Pages.ReceptionistModel
 @{
-    Layout = "_Layout";              // <- force this layout
-    ViewData["Title"] = "Receptionist";   // <- title value used by <title>@ViewData["Title"] - Hospital Management System</title>
+    Layout = "_Layout";
+    ViewData["Title"] = "Receptionist";
 }
 
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #0b1222e6;
+            --accent: #22d3ee;
+            --text: #e5e7eb;
+            --muted: #9ca3af;
+            --line: #1f2937;
+            --radius-xl: 18px;
+            --radius: 12px;
+            --shadow-md: 0 6px 20px rgba(0,0,0,.25);
+            --blur: saturate(140%) blur(10px)
+        }
 
+        html, body {
+            scroll-behavior: smooth
+        }
 
-@section Styles{
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-<style>
-  :root{
-    --bg:#0f172a;--card:#0b1222e6;--accent:#22d3ee;--text:#e5e7eb;--muted:#9ca3af;--line:#1f2937;
-    --radius-xl:18px;--radius:12px;--shadow-md:0 6px 20px rgba(0,0,0,.25);--blur:saturate(140%) blur(10px)
-  }
-  body{margin:0;font-family:"Inter",sans-serif;color:var(--text);background:radial-gradient(1200px 600px at 10% -10%,#0ea5e944,transparent 60%),var(--bg);min-height:100vh}
-  .app{display:grid;grid-template-columns:220px 1fr;height:100vh;gap:20px;padding:20px}
-  .sidebar{background:linear-gradient(180deg,#0b1222aa,#0b1222cc);backdrop-filter:var(--blur);border-radius:var(--radius-xl);border:1px solid #1f2a44;padding:20px 16px;display:flex;flex-direction:column;box-shadow:var(--shadow-md)}
-  .nav{list-style:none;margin:0;padding:0}
-  .nav li{margin:8px 0}
-  .nav a{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);padding:10px 12px;border-radius:10px;border:1px solid transparent;transition:.2s}
-  .nav a:hover{background:#16223a;border-color:#1b2a49}
-  .nav a.active{background:#11213c;border-color:#1b2a49}
-  .content{display:flex;flex-direction:column;gap:18px}
-  .topbar{display:flex;align-items:center;justify-content:space-between}
-  .title{font-size:20px;font-weight:700}
-  .btn{background:var(--accent);border:none;padding:10px 16px;border-radius:10px;color:#031423;font-weight:600;cursor:pointer;transition:.15s}
-  .btn:hover{transform:translateY(-1px)}
-  .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
-  .card{background:var(--card);border:1px solid #1f2a44;border-radius:var(--radius-xl);padding:18px;backdrop-filter:var(--blur)}
-  .card h3{margin:0 0 12px;font-size:16px}
+        body {
+            margin: 0;
+            font-family: "Inter",sans-serif;
+            color: var(--text);
+            background: radial-gradient(1200px 600px at 10% -10%,#0ea5e944,transparent 60%),var(--bg);
+            min-height: 100vh
+        }
+
+        .app {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            min-height: 100vh;
+            gap: 20px;
+            padding: 20px
+        }
+
+        .sidebar {
+            background: linear-gradient(180deg,#0b1222aa,#0b1222cc);
+            backdrop-filter: var(--blur);
+            border-radius: var(--radius-xl);
+            border: 1px solid #1f2a44;
+            padding: 20px 16px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-md)
+        }
+
+        .nav {
+            list-style: none;
+            margin: 0;
+            padding: 0
+        }
+
+            .nav li {
+                margin: 8px 0
+            }
+
+            .nav a {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                text-decoration: none;
+                color: var(--text);
+                padding: 10px 12px;
+                border-radius: 10px;
+                border: 1px solid transparent;
+                transition: .2s
+            }
+
+                .nav a:hover {
+                    background: #16223a;
+                    border-color: #1b2a49
+                }
+
+                .nav a.active {
+                    background: #11213c;
+                    border-color: #1b2a49
+                }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 18px
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .title {
+            font-size: 20px;
+            font-weight: 700
+        }
+
+        .btn {
+            background: var(--accent);
+            border: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            color: #031423;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .15s
+        }
+
+            .btn:hover {
+                transform: translateY(-1px)
+            }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1.2fr .8fr;
+            gap: 18px
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid #1f2a44;
+            border-radius: var(--radius-xl);
+            padding: 18px;
+            backdrop-filter: var(--blur)
+        }
+
+            .card h3 {
+                margin: 0 0 12px;
+                font-size: 16px
+            }
 
         .field-flex {
             display: flex;
             align-items: center;
-            gap: 8px; /* space between icon and text */
+            gap: 8px;
             border: 1px solid #20304e;
-            background: #aeb6c8;
+            background: #0f1a2fcc;
             border-radius: 14px;
-            padding: 6px 20px;
+            padding: 6px 12px
         }
 
             .field-flex i {
                 color: #92a3c3;
-                font-size: 18px;
-
-
-
-
-
+                font-size: 18px
             }
 
             .field-flex .input {
@@ -57,123 +156,274 @@
                 border: none;
                 background: transparent;
                 outline: none;
-                color: var(--text);
+                color: var(--text)
             }
 
+        .input::placeholder {
+            color: var(--muted)
+        }
 
-  
-  .input::placeholder{color:var(--muted)}
-  
-  .quick-list{display:grid;gap:10px}
-  .qa{display:flex;align-items:center;gap:10px;padding:12px;border-radius:14px;border:1px solid #1f2a44;background:#0f1a2fcc;transition:.18s;cursor:pointer;text-decoration:none;color:var(--text)}
-  .qa:hover{background:#11213ccc;transform:translateY(-1px)}
-  table{width:100%;border-collapse:separate;border-spacing:0 8px}
-  thead th{text-align:left;font-size:12px;color:#aeb6c8;font-weight:700;padding:0 12px 2px}
-  tbody tr{background:#0f1a2f;border:1px solid #1f2a44}
-  tbody td{padding:14px 12px}
-  tbody td:first-child{border-top-left-radius:12px;border-bottom-left-radius:12px}
-  tbody td:last-child{border-top-right-radius:12px;border-bottom-right-radius:12px}
-  .cancel-btn{background:transparent;border:1px solid #dc2626;color:#f87171;padding:6px 12px;border-radius:10px;cursor:pointer;text-decoration:none;display:inline-block;text-align:center}
-  .cancel-btn:hover{background:#7f1d1d}
-  .text-danger{color:#fca5a5;font-size:.85rem}
-</style>
+        .quick-list {
+            display: grid;
+            gap: 10px
+        }
+
+        .qa {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 14px;
+            border: 1px solid #1f2a44;
+            background: #0f1a2fcc;
+            transition: .18s;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text)
+        }
+
+            .qa:hover {
+                background: #11213ccc;
+                transform: translateY(-1px)
+            }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px
+        }
+
+        thead th {
+            text-align: left;
+            font-size: 12px;
+            color: #aeb6c8;
+            font-weight: 700;
+            padding: 0 12px 2px
+        }
+
+        tbody tr {
+            background: #0f1a2f;
+            border: 1px solid #1f2a44
+        }
+
+        tbody td {
+            padding: 14px 12px
+        }
+
+            tbody td:first-child {
+                border-top-left-radius: 12px;
+                border-bottom-left-radius: 12px
+            }
+
+            tbody td:last-child {
+                border-top-right-radius: 12px;
+                border-bottom-right-radius: 12px
+            }
+
+        .cancel-btn {
+            background: transparent;
+            border: 1px solid #dc2626;
+            color: #f87171;
+            padding: 6px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center
+        }
+
+            .cancel-btn:hover {
+                background: #7f1d1d
+            }
+
+        .text-danger {
+            color: #fca5a5;
+            font-size: .85rem
+        }
+
+        /* Add Patient form layout */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2,minmax(0,1fr));
+            gap: 12px
+        }
+
+            .form-grid .full {
+                grid-column: 1 / -1
+            }
+
+        .form-label {
+            display: block;
+            font-size: .9rem;
+            margin: 8px 4px
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid #20304e;
+            background: #0f1a2fcc;
+            color: var(--text);
+            outline: none
+        }
+
+            .form-control:focus {
+                border-color: #1b2a49
+            }
+    </style>
 }
 
 <div class="app">
-  <aside class="sidebar" aria-label="Primary">
-    <ul class="nav">
-      <li><a class="active" href="#"><i class="ri-home-5-line" aria-hidden="true"></i>Home</a></li>
-      <li><a href="#"><i class="ri-calendar-event-line" aria-hidden="true"></i>Appointments</a></li>
-      <li><a href="#"><i class="ri-team-line" aria-hidden="true"></i>Patients</a></li>
-      <li><a href="#"><i class="ri-calendar-2-line" aria-hidden="true"></i>Calendar</a></li>
-          </ul>
-  </aside>
+    <aside class="sidebar" aria-label="Primary">
+        <ul class="nav">
+            <li><a class="active" href="#"><i class="ri-home-5-line" aria-hidden="true"></i>Home</a></li>
+            <li><a href="#"><i class="ri-calendar-event-line" aria-hidden="true"></i>Appointments</a></li>
+            <li><a href="#"><i class="ri-team-line" aria-hidden="true"></i>Patients</a></li>
+            <li><a href="#"><i class="ri-calendar-2-line" aria-hidden="true"></i>Calendar</a></li>
+            <!-- Messages and Settings removed -->
+        </ul>
+    </aside>
 
-  <main class="content">
-    <div class="topbar">
-      <div class="title">Receptionist Home</div>
-      <button class="btn" type="button" onclick="document.getElementById('Input_Name')?.focus()">New Appointment</button>
-    </div>
+    <main class="content">
+        <div class="topbar">
+            <div class="title">Receptionist Home</div>
+            <button class="btn" type="button" onclick="document.getElementById('Input_Name')?.focus()">New Appointment</button>
+        </div>
 
-    <section class="grid">
-      <div class="card">
-        <h3>Patients</h3>
-        <form method="get" asp-page="./Receptionist">
-
+        <section class="grid">
+            <div class="card">
+                <h3>Patients</h3>
+                <form method="get" asp-page="./Receptionist">
                     <div class="field field-flex">
                         <i class="ri-search-line" aria-hidden="true"></i>
                         <input type="text" class="input" placeholder="Search patients..." />
                     </div>
+                </form>
+            </div>
 
+            <div class="card">
+                <h3>Quick Actions</h3>
+                <div class="quick-list">
+                    <a class="qa" id="go-add-patient" href="#add-patient">
+                        <i class="ri-user-add-line" aria-hidden="true"></i><span>Add Patient</span>
+                    </a>
+                    <a class="qa" href="#schedule-for-new">
+                        <i class="ri-calendar-check-line" aria-hidden="true"></i><span>Schedule Appointment</span>
+                    </a>
+                </div>
+            </div>
+        </section>
 
-          
-        </form>
-      </div>
+        <section class="card schedule" id="schedule-today">
+            <h3>Today's Schedule</h3>
+            <table aria-label="Today schedule">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Patient</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- rows go here -->
+                </tbody>
+            </table>
+            <p style="color:#9ca3af;margin:0">No appointments scheduled for today.</p>
+        </section>
 
-      <div class="card">
-        <h3>Quick Actions</h3>
-        <div class="quick-list">
-          <a class="qa" href="#add-patient"><i class="ri-user-add-line" aria-hidden="true"></i><span>Add Patient</span></a>
-          <a class="qa" href="#schedule-for-new"><i class="ri-calendar-check-line" aria-hidden="true"></i><span>Schedule Appointment</span></a>
-        </div>
-      </div>
-    </section>
+        <!-- ================= Add Patient (BOTTOM) ================= -->
+        <section class="card" id="add-patient" aria-labelledby="add-patient-title">
+            <h3 id="add-patient-title">Add Patient</h3>
 
-    <section class="card schedule" id="schedule-today">
-      <h3>Today's Schedule</h3>
+            <form method="post" asp-page-handler="AddPatient">
+                <div class="form-grid">
+                    <div>
+                        <label class="form-label" for="Input_Name">Name</label>
+                        <input id="Input_Name" name="Name" class="form-control" type="text" placeholder="Full name" required />
+                    </div>
 
-      
-      
-        <table aria-label="Today schedule">
-          <thead>
-            <tr>
-              <th>Time</th>
-              <th>Patient</th>
-              <th>Reason</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-         
-          </tbody>
-        </table>
-      
-      
-     
-        <p style="color:#9ca3af;margin:0">No appointments scheduled for today.</p>
-      
-    </section>
+                    <div>
+                        <label class="form-label" for="Input_DOB">Date of Birth</label>
+                        <input id="Input_DOB" name="DOB" class="form-control" type="date" required />
+                    </div>
 
-    
+                    <div>
+                        <label class="form-label" for="Input_Age">Age</label>
+                        <input id="Input_Age" name="Age" class="form-control" type="number" inputmode="numeric" min="0" readonly />
+                    </div>
 
-    
-     
-    
-  </main>
+                    <div>
+                        <label class="form-label" for="Input_Gender">Gender</label>
+                        <select id="Input_Gender" name="Gender" class="form-control" required>
+                            <option value="" selected disabled>Choose gender</option>
+                            <option>Male</option>
+                            <option>Female</option>
+                            <option>Other</option>
+                            <option>Prefer not to say</option>
+                        </select>
+                    </div>
+
+                    <div class="full">
+                        <label class="form-label" for="Input_Address">Address</label>
+                        <textarea id="Input_Address" name="Address" class="form-control" rows="3" placeholder="Street, City, State, ZIP"></textarea>
+                    </div>
+                </div>
+
+                <div style="margin-top:14px;display:flex;gap:10px">
+                    <button class="btn" type="submit"><i class="ri-save-3-line" aria-hidden="true"></i> Save Patient</button>
+                    <a class="cancel-btn" href="#top">Cancel</a>
+                </div>
+            </form>
+        </section>
+        <!-- ======================================================== -->
+
+    </main>
 </div>
 
-@section Scripts{
-  <partial name="_ValidationScriptsPartial"></partial>
-  <script>
-    (function(){
-      var dobEl=document.getElementById('Input_DOB');
-      var ageEl=document.getElementById('Input_Age');
-      function calcAge(){
-        if(!dobEl||!dobEl.value)return;
-        var dob=new Date(dobEl.value+'T00:00:00');
-        if(isNaN(dob))return;
-        var t=new Date();
-        var a=t.getFullYear()-dob.getFullYear();
-        var m=t.getMonth()-dob.getMonth();
-        if(m<0||(m===0&&t.getDate()<dob.getDate()))a--;
-        if(a>=0)ageEl.value=a;
-      }
-      if(dobEl){dobEl.addEventListener('change',calcAge);window.addEventListener('DOMContentLoaded',calcAge);}
-      var schedCard=document.getElementById('schedule-for-new');
-      if(schedCard){schedCard.scrollIntoView({behavior:'smooth'});}
-    })();
-  </script>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"></partial>
+    <script>
+        (function(){
+          // Auto-calc age from DOB
+          var dobEl=document.getElementById('Input_DOB');
+          var ageEl=document.getElementById('Input_Age');
+          function calcAge(){
+            if(!dobEl||!dobEl.value) return;
+            var dob=new Date(dobEl.value+'T00:00:00');
+            if(isNaN(dob)) return;
+            var t=new Date();
+            var a=t.getFullYear()-dob.getFullYear();
+            var m=t.getMonth()-dob.getMonth();
+            if(m<0||(m===0&&t.getDate()<dob.getDate())) a--;
+            if(a>=0 && ageEl) ageEl.value=a;
+          }
+          if(dobEl){
+            dobEl.addEventListener('change',calcAge);
+            dobEl.addEventListener('input',calcAge);
+            window.addEventListener('DOMContentLoaded',calcAge);
+          }
+
+          // Smooth-scroll to "Add Patient" + focus Name when quick action clicked
+          var addLink = document.getElementById('go-add-patient');
+          if(addLink){
+            addLink.addEventListener('click', function(e){
+              var target = document.getElementById('add-patient');
+              if(target){
+                e.preventDefault();
+                target.scrollIntoView({behavior:'smooth', block:'start'});
+                setTimeout(function(){
+                  document.getElementById('Input_Name')?.focus();
+                }, 350);
+              }
+            });
+          }
+
+          // Existing demo scroll (if schedule-for-new exists)
+          var schedCard=document.getElementById('schedule-for-new');
+          if(schedCard){schedCard.scrollIntoView({behavior:'smooth'});}
+        })();
+    </script>
 }
-
-
