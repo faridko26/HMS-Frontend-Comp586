@@ -5,8 +5,11 @@ namespace HMS_Frontend.Pages
 {
     public class ReceptionistModel : PageModel
     {
+
+      
         public void OnGet()
         {
         }
     }
+    
 }

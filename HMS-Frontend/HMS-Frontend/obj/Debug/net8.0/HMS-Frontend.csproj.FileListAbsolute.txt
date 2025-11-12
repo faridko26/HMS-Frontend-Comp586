@@ -32,3 +32,10 @@ C:\Users\organ\Documents\CSUN\COMP586\HMS-Frontend-Comp586\HMS-Frontend\HMS-Fron
 C:\Users\organ\Documents\CSUN\COMP586\HMS-Frontend-Comp586\HMS-Frontend\HMS-Frontend\obj\Debug\net8.0\HMS-Frontend.pdb
 C:\Users\organ\Documents\CSUN\COMP586\HMS-Frontend-Comp586\HMS-Frontend\HMS-Frontend\obj\Debug\net8.0\HMS-Frontend.genruntimeconfig.cache
 C:\Users\organ\Documents\CSUN\COMP586\HMS-Frontend-Comp586\HMS-Frontend\HMS-Frontend\obj\Debug\net8.0\ref\HMS-Frontend.dll
+C:\Users\organ\Documents\CSUN\COMP586\HMS-Frontend-Comp586\HMS-Frontend\HMS-Frontend\obj\Debug\net8.0\HMS-Frontend.csproj.AssemblyReference.cache
+C:\Users\organ\Documents\CSUN\COMP586\HMS-Frontend-Comp586\HMS-Frontend\HMS-Frontend\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\organ\Documents\CSUN\COMP586\HMS-Frontend-Comp586\HMS-Frontend\HMS-Frontend\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\organ\Documents\CSUN\COMP586\HMS-Frontend-Comp586\HMS-Frontend\HMS-Frontend\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\organ\Documents\CSUN\COMP586\HMS-Frontend-Comp586\HMS-Frontend\HMS-Frontend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\organ\Documents\CSUN\COMP586\HMS-Frontend-Comp586\HMS-Frontend\HMS-Frontend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\organ\Documents\CSUN\COMP586\HMS-Frontend-Comp586\HMS-Frontend\HMS-Frontend\obj\Debug\net8.0\HMS-Fron.7AA21FF0.Up2Date

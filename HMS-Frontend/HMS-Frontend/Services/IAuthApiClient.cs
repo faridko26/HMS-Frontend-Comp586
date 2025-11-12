@@ -1,11 +1,9 @@
-﻿// Services/IAuthApiClient.cs
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 public interface IAuthApiClient
 {
-    Task<HttpResponseMessage> LoginAsync(LoginRequest req);
-    
+    /// <summary>
+    /// Sends login request to backend and returns JWT token if successful, otherwise null.
+    /// </summary>
+    Task<string?> LoginAsync(LoginRequest req);
 }
-
-//Add an interface so we can inject a fake

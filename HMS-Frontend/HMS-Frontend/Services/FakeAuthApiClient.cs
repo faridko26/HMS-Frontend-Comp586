@@ -1,21 +1,20 @@
-﻿// Services/FakeAuthApiClient.cs
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 public class FakeAuthApiClient : IAuthApiClient
 {
-    public Task<HttpResponseMessage> LoginAsync(LoginRequest req)
+    public Task<string?> LoginAsync(LoginRequest req)
     {
-        var ok = !string.IsNullOrWhiteSpace(req.Email)
-                 && req.Email.Contains("@")
+        // Simulate simple fake login logic
+        var ok = !string.IsNullOrWhiteSpace(req.Username)
                  && req.Password == "123456";
-        return Task.FromResult(new HttpResponseMessage(ok ? HttpStatusCode.OK : HttpStatusCode.Unauthorized)
-        {
-            Content = new StringContent(ok ? "{\"token\":\"fake-jwt\"}" : "", Encoding.UTF8, "application/json")
-        });
-    }
 
-    
+        // Return a fake JWT token if credentials are "valid"
+        var fakeToken = ok
+            ? "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +
+              "eyJ1c2VybmFtZSI6IiIgLCJyb2xlIjoiYWRtaW4ifQ." +
+              "fakeSignature123456"
+            : null;
+
+        return Task.FromResult(fakeToken);
+    }
 }

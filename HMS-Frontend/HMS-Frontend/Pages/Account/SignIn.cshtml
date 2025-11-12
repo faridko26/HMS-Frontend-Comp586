@@ -1,18 +1,17 @@
 ﻿@page "/Account/SignIn"
 @model HMS_Frontend.Pages.Account.SignInModel
 @{
-    Layout = "_Layout";              // <- force this layout
-    ViewData["Title"] = "Sign in";   // <- title value used by <title>@ViewData["Title"] - Hospital Management System</title>
+    Layout = "_Layout";
+    ViewData["Title"] = "Sign in";
 }
 
+<div asp-validation-summary="All" class="validation-summary"></div>
 
 <div class="auth-split">
     <!-- LEFT: Logo / Branding -->
     <section class="auth-left">
         <div class="brand">
-            <!-- Put your logo in wwwroot/images and update the src -->
             <img src="~/images/healthcare-logo.png" alt="Healthcare logo" class="brand-logo" />
-          
         </div>
     </section>
 
@@ -21,9 +20,9 @@
         <div class="auth-form">
             <form method="post" asp-page-handler="Login">
                 <div class="field">
-                    <label asp-for="Login.Email">Email</label>
-                    <input asp-for="Login.Email" class="input" />
-                    <span class="validation" asp-validation-for="Login.Email"></span>
+                    <label asp-for="Login.Username">Username</label>
+                    <input asp-for="Login.Username" class="input" />
+                    <span class="validation" asp-validation-for="Login.Username"></span>
                 </div>
 
                 <div class="field">
@@ -38,9 +37,6 @@
                     <a asp-page="/ForgotPassword">Forgot password?</a>
                 </div>
             </form>
-
-        
-
         </div>
     </section>
 </div>
