@@ -39,3 +39,4 @@ C:\Users\organ\Documents\CSUN\COMP586\HMS-Frontend-Comp586\HMS-Frontend\HMS-Fron
 C:\Users\organ\Documents\CSUN\COMP586\HMS-Frontend-Comp586\HMS-Frontend\HMS-Frontend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\organ\Documents\CSUN\COMP586\HMS-Frontend-Comp586\HMS-Frontend\HMS-Frontend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\organ\Documents\CSUN\COMP586\HMS-Frontend-Comp586\HMS-Frontend\HMS-Frontend\obj\Debug\net8.0\HMS-Fron.7AA21FF0.Up2Date
+C:\Users\organ\Documents\CSUN\COMP586\HMS-Frontend-Comp586\HMS-Frontend\HMS-Frontend\obj\Debug\net8.0\swae.build.ex.cache

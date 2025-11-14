@@ -31,7 +31,7 @@ public class SignInModel : PageModel
             return Page();
         }
 
-        // ?? Print the token to the console for debugging
+        // Print the token to the console for debugging
         Console.WriteLine("JWT Token: " + token);
 
 

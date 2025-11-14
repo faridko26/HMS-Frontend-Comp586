@@ -390,23 +390,26 @@
                                                     <span class="pill" style="background:#fff7ed;border-color:#ffedd5;color:#92400e;">Deactivated</span>
                                                 }
                                             </td>
-                                            <td>
-                                                <a class="btn small secondary" href="#view-@u.Id">👁️ View</a>
-                                                <a class="btn small secondary" href="#edit-@u.Id">✏️ Update</a>
+                                            <td style="min-width: 280px;">
+                                                <div style="display: flex; align-items: center; gap: 6px;">
 
-                                                @if (u.IsActive)
-                                                {
-                                                    <form method="post" asp-page-handler="Deactivate" style="display:inline" onsubmit="return confirm('Deactivate this user?');">
-                                                        @Html.AntiForgeryToken()
-                                                        <input type="hidden" name="Id" value="@u.Id" />
-                                                        <button class="btn small warning" type="submit">⏸️ Deactivate</button>
-                                                    </form>
-                                                }
-                                                else
-                                                {
-                                                    <!-- API exposes only PATCH /deactivate; no re-activate endpoint available -->
-                                                    <span class="pill">No actions</span>
-                                                }
+                                                    <a class="btn small secondary" href="#view-@u.Id">👁️ View</a>
+
+                                                    <button class="btn small secondary" data-id="@u.Id" onclick="openUpdateModal(this)">✏️ Update</button>
+
+                                                    @if (u.IsActive)
+                                                    {
+                                                        <form method="post" asp-page-handler="Deactivate" onsubmit="return confirm('Deactivate this user?');">
+                                                            @Html.AntiForgeryToken()
+                                                            <input type="hidden" name="Id" value="@u.Id" />
+                                                            <button class="btn small warning" type="submit">⏸️ Deactivate</button>
+                                                        </form>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="pill">No actions</span>
+                                                    }
+                                                </div>
                                             </td>
                                         </tr>
                                     }
@@ -455,39 +458,52 @@
                             </div>
 
                             <!-- Edit / Update -->
-                            <div id="edit-@u.Id" class="modal">
+                            <div id="updateUserModal" class="modal">
                                 <div class="panel">
                                     <header>
-                                        <h3>Update User — @u.FullName</h3>
+                                        <h3>Update User</h3>
                                         <a class="close-x" href="#">✕</a>
                                     </header>
                                     <div class="content">
-                                        <form method="post" asp-page-handler="Update">
+                                        <form id="updateUserForm" method="post" asp-page-handler="Update">
                                             @Html.AntiForgeryToken()
-                                            <input type="hidden" name="Id" value="@u.Id" />
+
+                                            <input type="hidden" id="update_Id" name="Id" />
+                                            <input type="hidden" id="update_Role_Hidden" name="UpdateInput.Role" />
+
                                             <div class="row">
                                                 <div class="form-field col-6">
                                                     <label>Full Name</label>
-                                                    <input type="text" name="FullName" value="@u.FullName" required />
+                                                    <input type="text" id="update_FullName" name="UpdateInput.FullName" required />
                                                 </div>
                                                 <div class="form-field col-6">
                                                     <label>Role</label>
-                                                    <select name="Role">
-                                                        <option value="Receptionist" selected="@(u.Role == "Receptionist")">Receptionist</option>
-                                                        <option value="Nurse" selected="@(u.Role == "Nurse")">Nurse</option>
-                                                        <option value="Doctor" selected="@(u.Role == "Doctor")">Doctor</option>
-                                                        <option value="Admin" selected="@(u.Role == "Admin")">Admin</option>
-                                                    </select>
+                                                    <input type="text" id="update_Role" disabled />
                                                 </div>
                                                 <div class="form-field col-6">
                                                     <label>Email</label>
-                                                    <input type="email" name="Email" value="@u.Email" required />
+                                                    <input type="email" id="update_Email" name="UpdateInput.Email" required />
                                                 </div>
                                                 <div class="form-field col-6">
                                                     <label>Username</label>
-                                                    <input type="text" name="Username" value="@u.Username" required />
+                                                    <input type="text" id="update_Username" name="UpdateInput.Username" required />
+                                                </div>
+
+                                                <div class="form-field col-6">
+                                                    <label>Status</label>
+                                                    <select id="update_IsActive" name="UpdateInput.IsActive">
+                                                        <option value="true">Active</option>
+                                                        <option value="false">Deactivated</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-field col-6">
+                                                    <label>New Password (Leave blank to keep unchanged)</label>
+                                                    <input type="password" id="update_Password" name="UpdateInput.Password"
+                                                           autocomplete="new-password" />
                                                 </div>
                                             </div>
+
                                             <div style="text-align:right; margin-top:14px;">
                                                 <a class="btn" href="#">Cancel</a>
                                                 <button class="btn success" type="submit">💾 Save</button>
@@ -552,3 +568,42 @@
 
 </body>
 </html>
+@section Scripts {
+    <script>
+        // This function is called by the "Update" button
+        async function openUpdateModal(button) {
+            const userId = button.dataset.id;
+
+            try {
+                // 1. Fetch user data from our new C# handler
+                const response = await fetch(`?handler=UserDetails&id=${userId}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user details.');
+                }
+                const user = await response.json();
+
+                // 2. Populate the single modal's form
+                document.getElementById('update_Id').value = user.userId; // <-- This is the correct name
+                document.getElementById('update_FullName').value = user.fullName;
+                document.getElementById('update_Email').value = user.email;
+                document.getElementById('update_Username').value = user.username;
+
+                        // Handle Role
+        document.getElementById('update_Role').value = user.role;
+        document.getElementById('update_Role_Hidden').value = user.role;
+
+                // 1. Set the Status dropdown (user.isActive is a boolean)
+                document.getElementById('update_IsActive').value = user.isActive.toString();
+
+                // 2. Always clear the password field for security
+                document.getElementById('update_Password').value = '';
+                // 3. Show the modal
+                window.location.hash = '#updateUserModal';
+
+            } catch (error) {
+                console.error(error);
+                alert('Could not load user data.');
+            }
+        }
+    </script>
+}

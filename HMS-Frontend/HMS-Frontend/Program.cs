@@ -6,11 +6,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<BackendOptions>(
     builder.Configuration.GetSection("Backend"));
 
-builder.Services.AddHttpContextAccessor();   // <-- needed for session token access
-builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 // ===== Auth client (you already had this) =====
-var useFake = builder.Configuration.GetValue<bool>("Frontend:UseFakeApi");
+var useFake = builder.Configuration.GetValue<bool>("Frontend" +
+    "" +
+    ":UseFakeApi");
 if (useFake)
 {
     builder.Services.AddSingleton<IAuthApiClient, FakeAuthApiClient>();
