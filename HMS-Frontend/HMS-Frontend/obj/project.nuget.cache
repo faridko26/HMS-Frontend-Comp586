@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "/FlRpRg0mQ4=",
+  "dgSpecHash": "YoiYJ5+touk=",
   "success": true,
   "projectFilePath": "C:\\Users\\organ\\Documents\\CSUN\\COMP586\\HMS-Frontend-Comp586\\HMS-Frontend\\HMS-Frontend\\HMS-Frontend.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\organ\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\organ\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.0\\microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\organ\\.nuget\\packages\\microsoft.identitymodel.abstractions\\8.14.0\\microsoft.identitymodel.abstractions.8.14.0.nupkg.sha512",
     "C:\\Users\\organ\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\8.14.0\\microsoft.identitymodel.jsonwebtokens.8.14.0.nupkg.sha512",
     "C:\\Users\\organ\\.nuget\\packages\\microsoft.identitymodel.logging\\8.14.0\\microsoft.identitymodel.logging.8.14.0.nupkg.sha512",
