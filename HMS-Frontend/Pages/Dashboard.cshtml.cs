@@ -37,6 +37,9 @@ namespace HMS_Frontend.Pages
 
         public async Task OnGetAsync()
         {
+            var now = DateTime.Now;
+            NewAppointment.StartsAt = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0);
+            Input.DateOfBirth = DateTime.Today;
             await LoadDataAsync();
         }
 

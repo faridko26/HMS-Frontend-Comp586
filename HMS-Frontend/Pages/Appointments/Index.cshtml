@@ -65,10 +65,10 @@
             transition: transform 0.15s;
         }
 
-        tbody tr:hover {
-            transform: translateY(-2px);
-            background: #25334bcc;
-        }
+            tbody tr:hover {
+                transform: translateY(-2px);
+                background: #25334bcc;
+            }
 
         tbody td {
             padding: 16px 12px;
@@ -76,17 +76,17 @@
             border-bottom: 1px solid #1f2a44;
         }
 
-        tbody td:first-child {
-            border-left: 1px solid #1f2a44;
-            border-top-left-radius: 12px;
-            border-bottom-left-radius: 12px;
-        }
+            tbody td:first-child {
+                border-left: 1px solid #1f2a44;
+                border-top-left-radius: 12px;
+                border-bottom-left-radius: 12px;
+            }
 
-        tbody td:last-child {
-            border-right: 1px solid #1f2a44;
-            border-top-right-radius: 12px;
-            border-bottom-right-radius: 12px;
-        }
+            tbody td:last-child {
+                border-right: 1px solid #1f2a44;
+                border-top-right-radius: 12px;
+                border-bottom-right-radius: 12px;
+            }
 
         .btn {
             background: var(--accent);
@@ -104,19 +104,19 @@
             font-size: 0.9rem;
         }
 
-        .btn:hover {
-            transform: translateY(-1px);
-            filter: brightness(1.1);
-        }
+            .btn:hover {
+                transform: translateY(-1px);
+                filter: brightness(1.1);
+            }
 
         .btn-danger {
             background: #ef4444;
             color: white;
         }
 
-        .btn-danger:hover {
-            background: #dc2626;
-        }
+            .btn-danger:hover {
+                background: #dc2626;
+            }
 
         .status-badge {
             padding: 4px 10px;
@@ -126,9 +126,23 @@
             text-transform: uppercase;
         }
 
-        .status-scheduled { background: #0ea5e933; color: #38bdf8; border: 1px solid #0ea5e9; }
-        .status-completed { background: #22c55e33; color: #4ade80; border: 1px solid #22c55e; }
-        .status-cancelled { background: #ef444433; color: #f87171; border: 1px solid #ef4444; }
+        .status-scheduled {
+            background: #0ea5e933;
+            color: #38bdf8;
+            border: 1px solid #0ea5e9;
+        }
+
+        .status-completed {
+            background: #22c55e33;
+            color: #4ade80;
+            border: 1px solid #22c55e;
+        }
+
+        .status-cancelled {
+            background: #ef444433;
+            color: #f87171;
+            border: 1px solid #ef4444;
+        }
 
         /* Modal Styles */
         .modal-overlay {
@@ -151,7 +165,9 @@
             gap: 16px;
         }
 
-        .full { grid-column: 1 / -1; }
+        .full {
+            grid-column: 1 / -1;
+        }
 
         .form-label {
             display: block;
@@ -170,9 +186,9 @@
             outline: none;
         }
 
-        .form-control:focus {
-            border-color: var(--accent);
-        }
+            .form-control:focus {
+                border-color: var(--accent);
+            }
 
         .text-danger {
             color: #ef4444;
@@ -301,7 +317,7 @@
 
                 <div>
                     <label class="form-label" asp-for="NewAppointment.StartsAt">Date & Time</label>
-                    <input asp-for="NewAppointment.StartsAt" class="form-control" type="datetime-local" required />
+                    <input asp-for="NewAppointment.StartsAt" class="form-control" type="datetime-local" step="60" value="@Model.NewAppointment.StartsAt.ToString("yyyy-MM-ddTHH:mm")" required />
                 </div>
 
                 <div>
@@ -345,7 +361,7 @@
 
                 <div>
                     <label class="form-label" asp-for="EditAppointment.StartsAt">Date & Time</label>
-                    <input asp-for="EditAppointment.StartsAt" id="Edit_StartsAt" class="form-control" type="datetime-local" required />
+                    <input asp-for="EditAppointment.StartsAt" id="Edit_StartsAt" class="form-control" type="datetime-local" step="60" required />
                 </div>
 
                 <div>

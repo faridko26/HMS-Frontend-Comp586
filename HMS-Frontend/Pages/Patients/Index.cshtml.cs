@@ -40,6 +40,7 @@ namespace HMS_Frontend.Pages.Patients
 
         public async Task OnGetAsync(int? patientId = null)
         {
+            NewPatient.DateOfBirth = DateTime.Today;
             if (!string.IsNullOrWhiteSpace(SearchQuery))
             {
                 Patients = await _api.SearchPatientsAsync(SearchQuery);

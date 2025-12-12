@@ -31,6 +31,8 @@ namespace HMS_Frontend.Pages.Appointments
 
         public async Task OnGetAsync()
         {
+            var now = DateTime.Now;
+            NewAppointment.StartsAt = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0);
             await LoadDataAsync();
         }
 
