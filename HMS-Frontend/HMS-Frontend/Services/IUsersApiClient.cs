@@ -1,4 +1,5 @@
 ﻿// Services/IUsersApiClient.cs
+using HMS_Frontend.Models;
 public interface IUsersApiClient
 {
     Task<List<UserDto>> GetAllAsync();
@@ -6,7 +7,7 @@ public interface IUsersApiClient
     Task<bool> CreateAsync(CreateUserRequest req);
     Task<bool> UpdateAsync(int id, UpdateUserRequest req);
     Task<bool> DeactivateAsync(int id);
-    
+
 }
 
 

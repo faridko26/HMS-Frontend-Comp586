@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using HMS_Frontend.Models;
+using System.Threading.Tasks;
 
 public class FakeAuthApiClient : IAuthApiClient
 {

@@ -1,18 +1,19 @@
 ﻿// Services/UsersApiClient.cs
+using HMS_Frontend.Models;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 
 public class UsersApiClient : IUsersApiClient
 {
-    
+
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly HttpClient _http;
     private readonly JsonSerializerOptions _json = new(JsonSerializerDefaults.Web);
 
     public UsersApiClient(HttpClient http, IHttpContextAccessor httpContextAccessor)
     {
-        _http = http; 
+        _http = http;
         _httpContextAccessor = httpContextAccessor;
     }
 
@@ -75,24 +76,7 @@ public class UsersApiClient : IUsersApiClient
     public async Task<bool> UpdateAsync(int id, UpdateUserRequest req)
     {
         SetAuthorizationHeader();
-
-        // 1. Create *new* options just for this send, forcing PascalCase
-        var pascalCaseOptions = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = null // This preserves PascalCase
-        };
-
-        // 2. Manually serialize the request with these new options
-        string jsonPayload = System.Text.Json.JsonSerializer.Serialize(req, pascalCaseOptions);
-
-        // 3. Create the StringContent
-        var content = new StringContent(jsonPayload, System.Text.Encoding.UTF8, "application/json");
-
-        // 4. Log the exact JSON payload we are sending
-        Console.WriteLine($"[API update Client] Sending JSON: {jsonPayload}");
-
-        // 5. Send the request
-        var res = await _http.PutAsync($"api/Users/{id}", content);
+        var res = await _http.PutAsJsonAsync($"api/Users/{id}", req, _json);
 
         if (!res.IsSuccessStatusCode)
         {
@@ -122,5 +106,5 @@ public class UsersApiClient : IUsersApiClient
         return res.IsSuccessStatusCode;
     }
 
-  
+
 }

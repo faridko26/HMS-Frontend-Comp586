@@ -1,5 +1,6 @@
 ﻿// Services/AuthApiClient.cs
 using System.Net.Http;
+using HMS_Frontend.Models;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
