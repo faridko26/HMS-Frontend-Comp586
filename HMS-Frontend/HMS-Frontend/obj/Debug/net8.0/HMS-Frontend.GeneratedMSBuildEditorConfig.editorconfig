@@ -38,16 +38,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXBwb2ludG1lbnRzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/organ/Documents/CSUN/COMP586/HMS-Frontend-Comp586/HMS-Frontend/HMS-Frontend/Pages/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/organ/Documents/CSUN/COMP586/HMS-Frontend-Comp586/HMS-Frontend/HMS-Frontend/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/organ/Documents/CSUN/COMP586/HMS-Frontend-Comp586/HMS-Frontend/HMS-Frontend/Pages/Patients/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF0aWVudHNcSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/organ/Documents/CSUN/COMP586/HMS-Frontend-Comp586/HMS-Frontend/HMS-Frontend/Pages/Receptionist.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVjZXB0aW9uaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/organ/Documents/CSUN/COMP586/HMS-Frontend-Comp586/HMS-Frontend/HMS-Frontend/Pages/Shared/_ValidationScriptsPartial.cshtml]
