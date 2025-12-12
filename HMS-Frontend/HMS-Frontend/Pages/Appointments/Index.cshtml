@@ -1,4 +1,431 @@
 ﻿@page
 @model HMS_Frontend.Pages.Appointments.IndexModel
 @{
+    Layout = "_Layout";
+    ViewData["Title"] = "All Appointments";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #0b1222e6;
+            --accent: #22d3ee;
+            --text: #e5e7eb;
+            --muted: #9ca3af;
+            --line: #1f2937;
+            --radius-xl: 18px;
+            --radius: 12px;
+            --shadow-md: 0 6px 20px rgba(0,0,0,.25);
+            --blur: saturate(140%) blur(10px)
+        }
+
+        body {
+            background: radial-gradient(1200px 600px at 10% -10%,#0ea5e944,transparent 60%),var(--bg);
+            color: var(--text);
+            font-family: "Inter",sans-serif;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid #1f2a44;
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            backdrop-filter: var(--blur);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: black;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+        }
+
+        thead th {
+            text-align: left;
+            font-size: 12px;
+            color: #aeb6c8;
+            font-weight: 700;
+            padding: 0 12px 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tbody tr {
+            background: #1e293bcc;
+            transition: transform 0.15s;
+        }
+
+        tbody tr:hover {
+            transform: translateY(-2px);
+            background: #25334bcc;
+        }
+
+        tbody td {
+            padding: 16px 12px;
+            border-top: 1px solid #1f2a44;
+            border-bottom: 1px solid #1f2a44;
+        }
+
+        tbody td:first-child {
+            border-left: 1px solid #1f2a44;
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+        }
+
+        tbody td:last-child {
+            border-right: 1px solid #1f2a44;
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+
+        .btn {
+            background: var(--accent);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            color: #031423;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .15s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.1);
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 99px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-scheduled { background: #0ea5e933; color: #38bdf8; border: 1px solid #0ea5e9; }
+        .status-completed { background: #22c55e33; color: #4ade80; border: 1px solid #22c55e; }
+        .status-cancelled { background: #ef444433; color: #f87171; border: 1px solid #ef4444; }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .full { grid-column: 1 / -1; }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            background: #0f172a;
+            color: white;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent);
+        }
+
+        .text-danger {
+            color: #ef4444;
+        }
+    </style>
+}
+
+<div class="container" style="padding-top: 20px;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Appointments</h2>
+        <div class="d-flex gap-2">
+            <button onclick="openAddModal()" class="btn">
+                <i class="ri-add-line"></i> New Appointment
+            </button>
+            <a asp-page="/Dashboard" class="btn" style="background: #334155; color: #e2e8f0;">
+                <i class="ri-arrow-left-line"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div style="padding: 12px; background: #065f46; color: #ecfdf5; border-radius: 12px; border: 1px solid #047857; margin-bottom: 18px;">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <div class="card">
+        @if (Model.Appointments != null && Model.Appointments.Any())
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date & Time</th>
+                        <th>Patient</th>
+                        <th>Reason</th>
+                        <th>Duration</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var appt in Model.Appointments)
+                    {
+                        <tr>
+                            <td>
+                                <div style="font-weight: 600; color: #38bdf8;">@appt.StartsAt.ToString("MMM dd, yyyy")</div>
+                                <div style="font-size: 0.9rem; color: #e2e8f0;">@appt.StartsAt.ToString("hh:mm tt")</div>
+                            </td>
+                            <td>
+                                @if (appt.Patient != null)
+                                {
+                                    <div style="font-weight: 500;">@appt.Patient.FirstName @appt.Patient.LastName</div>
+                                    <div style="font-size: 0.8rem; color: #94a3b8;">@appt.Patient.Phone</div>
+                                }
+                                else
+                                {
+                                    <span class="text-danger">Unknown (ID: @appt.PatientId)</span>
+                                }
+                            </td>
+
+                            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                @appt.Reason
+                            </td>
+                            <td>@appt.DurationMinutes min</td>
+                            <td>
+                                @{
+                                    var statusClass = appt.Status?.ToLower() switch
+                                    {
+                                        "completed" => "status-completed",
+                                        "cancelled" => "status-cancelled",
+                                        _ => "status-scheduled"
+                                    };
+                                }
+                                <span class="status-badge @statusClass">@appt.Status</span>
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <button type="button" class="btn" style="padding: 6px 10px;"
+                                            onclick="openEditModal(@appt.Id, @appt.PatientId, '@(appt.Patient?.FirstName + " " + appt.Patient?.LastName)', '@appt.StartsAt.ToString("yyyy-MM-ddTHH:mm")', @appt.DurationMinutes, '@appt.Reason')">
+                                        <i class="ri-edit-line"></i>
+                                    </button>
+
+                                    @if (appt.Status != "Cancelled")
+                                    {
+                                        <form method="post" asp-page-handler="CancelAppointment" asp-route-id="@appt.Id" onsubmit="return confirm('Cancel this appointment?');" style="display:inline;">
+                                            <button class="btn btn-danger" style="padding: 6px 10px;">
+                                                <i class="ri-close-circle-line"></i>
+                                            </button>
+                                        </form>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div style="text-align: center; padding: 40px; color: #94a3b8;">
+                <i class="ri-calendar-line" style="font-size: 48px; margin-bottom: 10px; display: block;"></i>
+                <p>No appointments found.</p>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Add Modal -->
+<div id="add-modal" class="modal-overlay">
+    <div class="card" style="width: 100%; max-width: 500px;">
+        <h3 style="margin-top: 0; color: black;">New Appointment</h3>
+        <div asp-validation-summary="All" class="text-danger" style="margin-bottom: 15px; font-size: 0.9rem;"></div>
+        <form method="post" asp-page-handler="AddAppointment">
+            <div class="form-grid">
+                <div class="full">
+                    <label class="form-label" asp-for="NewAppointment.PatientId">Patient</label>
+                    <select asp-for="NewAppointment.PatientId" class="form-control" required>
+                        <option value="">Select Patient</option>
+                        @foreach (var p in Model.Patients)
+                        {
+                            <option value="@p.Id">@p.FirstName @p.LastName</option>
+                        }
+                    </select>
+                </div>
+
+                <div>
+                    <label class="form-label" asp-for="NewAppointment.StartsAt">Date & Time</label>
+                    <input asp-for="NewAppointment.StartsAt" class="form-control" type="datetime-local" required />
+                </div>
+
+                <div>
+                    <label class="form-label" asp-for="NewAppointment.DurationMinutes">Duration</label>
+                    <select asp-for="NewAppointment.DurationMinutes" class="form-control">
+                        <option value="15">15 Minutes</option>
+                        <option value="30">30 Minutes</option>
+                        <option value="45">45 Minutes</option>
+                        <option value="60">1 Hour</option>
+                    </select>
+                </div>
+
+                <div class="full">
+                    <label class="form-label" asp-for="NewAppointment.Reason">Reason</label>
+                    <textarea asp-for="NewAppointment.Reason" class="form-control" rows="3"></textarea>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn" style="background: transparent; border: 1px solid #ef4444; color: #ef4444;" onclick="closeAddModal()">Cancel</button>
+                <button type="submit" class="btn">Schedule</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div id="edit-modal" class="modal-overlay">
+    <div class="card" style="width: 100%; max-width: 500px;">
+        <h3 style="margin-top: 0; color: black;">Edit Schedule</h3>
+        <div asp-validation-summary="All" class="text-danger" style="margin-bottom: 15px; font-size: 0.9rem;"></div>
+        <form method="post" asp-page-handler="EditAppointment">
+            <input type="hidden" asp-for="EditAppointmentId" id="Edit_Id" />
+            <input type="hidden" asp-for="EditAppointment.PatientId" id="Edit_PatientId" />
+
+            <div class="form-grid">
+                <div class="full">
+                    <label class="form-label">Patient</label>
+                    <input id="Edit_PatientName" class="form-control" readonly style="background: #334155; color: #fff; font-weight: 600; cursor: not-allowed;" />
+                </div>
+
+                <div>
+                    <label class="form-label" asp-for="EditAppointment.StartsAt">Date & Time</label>
+                    <input asp-for="EditAppointment.StartsAt" id="Edit_StartsAt" class="form-control" type="datetime-local" required />
+                </div>
+
+                <div>
+                    <label class="form-label" asp-for="EditAppointment.DurationMinutes">Duration</label>
+                    <select asp-for="EditAppointment.DurationMinutes" id="Edit_Duration" class="form-control">
+                        <option value="15">15 Minutes</option>
+                        <option value="30">30 Minutes</option>
+                        <option value="45">45 Minutes</option>
+                        <option value="60">1 Hour</option>
+                    </select>
+                </div>
+
+                <div class="full">
+                    <label class="form-label" asp-for="EditAppointment.Reason">Reason</label>
+                    <textarea asp-for="EditAppointment.Reason" id="Edit_Reason" class="form-control" rows="3"></textarea>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn" style="background: transparent; border: 1px solid #ef4444; color: #ef4444;" onclick="closeEditModal()">Cancel</button>
+                <button type="submit" class="btn">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function openAddModal() {
+            document.getElementById('add-modal').style.display = 'flex';
+        }
+
+        function closeAddModal() {
+            document.getElementById('add-modal').style.display = 'none';
+        }
+
+        function openEditModal(id, patientId, patientName, startsAt, duration, reason) {
+            document.getElementById('Edit_Id').value = id;
+            document.getElementById('Edit_PatientId').value = patientId;
+            document.getElementById('Edit_PatientName').value = patientName;
+            document.getElementById('Edit_StartsAt').value = startsAt;
+            document.getElementById('Edit_Duration').value = duration;
+            document.getElementById('Edit_Reason').value = reason;
+
+            document.getElementById('edit-modal').style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').style.display = 'none';
+        }
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            var editModal = document.getElementById('edit-modal');
+            var addModal = document.getElementById('add-modal');
+            if (event.target == editModal) {
+                editModal.style.display = "none";
+            }
+            if (event.target == addModal) {
+                addModal.style.display = "none";
+            }
+        }
+
+        // Check for server-side errors and re-open modals
+        @if (ViewData["ShowAddModal"] as bool? == true)
+        {
+                <text>
+                document.addEventListener("DOMContentLoaded", function() {
+                    openAddModal();
+                });
+                </text>
+        }
+
+        @if (ViewData["ShowEditModal"] as bool? == true)
+        {
+                <text>
+                document.addEventListener("DOMContentLoaded", function() {
+                    document.getElementById('edit-modal').style.display = 'flex';
+                });
+                </text>
+        }
+    </script>
 }

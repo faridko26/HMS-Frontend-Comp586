@@ -1,6 +1,7 @@
 // Pages/Admin.cshtml.cs
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using HMS_Frontend.Models;
 
 namespace HMS_Frontend.Pages
 {
@@ -12,7 +13,7 @@ namespace HMS_Frontend.Pages
 
         public List<UserDto> Users { get; set; } = new();
 
-      
+
         [BindProperty] public CreateUserRequest CreateInput { get; set; } = new();
         [BindProperty] public UpdateUserRequest UpdateInput { get; set; } = new();
         [BindProperty] public int Id { get; set; } // used by Update/Deactivate
@@ -24,7 +25,14 @@ namespace HMS_Frontend.Pages
 
         public async Task<IActionResult> OnPostCreate()
         {
-            if (!ModelState.IsValid) return await Reload();
+            // 1. Clear all errors (including UpdateInput's)
+            ModelState.Clear();
+
+            // 2. Validate ONLY CreateInput
+            if (!TryValidateModel(CreateInput, nameof(CreateInput)))
+            {
+                return await Reload();
+            }
 
             var ok = await _users.CreateAsync(new CreateUserRequest
             {
@@ -64,54 +72,69 @@ namespace HMS_Frontend.Pages
 
         public async Task<IActionResult> OnPostUpdate()
         {
-            // We already added this fix, but make sure it's here
-            if (!ModelState.IsValid || Id == 0)
+            Console.WriteLine($"[SERVER] OnPostUpdate Called. Id: {Id}");
+
+            // 1. Clear all errors (including CreateInput's)
+            ModelState.Clear();
+
+            // 2. Validate ONLY UpdateInput
+            if (!TryValidateModel(UpdateInput, nameof(UpdateInput)))
             {
-                // --- ADD THIS LOGGING ---
-                Console.WriteLine("[SERVER] OnPostUpdate was called but ModelState is INVALID.");
-                foreach (var entry in ModelState)
+                // If validation failed, check if it's just the empty password
+                if (string.IsNullOrEmpty(UpdateInput.Password))
                 {
-                    if (entry.Value.Errors.Count > 0)
+                    // Remove the password error
+                    ModelState.Remove("UpdateInput.Password");
+
+                    // Re-check validity after removal
+                    if (ModelState.IsValid)
                     {
-                        Console.WriteLine($"[SERVER] Error for key '{entry.Key}':");
-                        foreach (var error in entry.Value.Errors)
-                        {
-                            Console.WriteLine($"  - {error.ErrorMessage}");
-                        }
+                        // It was only the password, so proceed
+                        goto ProceedUpdate;
                     }
                 }
-                // -------------------------
 
-                UpdateInput = new UpdateUserRequest(); // <-- NEW
+                // If we are here, there are other errors
+                Console.WriteLine("[SERVER] OnPostUpdate: Validation failed.");
+                foreach (var entry in ModelState)
+                {
+                    foreach (var error in entry.Value.Errors)
+                    {
+                        Console.WriteLine($"  - {entry.Key}: {error.ErrorMessage}");
+                    }
+                }
+                UpdateInput = new UpdateUserRequest();
                 return await Reload();
             }
-            // ?? ADD THIS LINE to see what the server receives
-            Console.WriteLine($"[SERVER] OnPostUpdate: Role from form is '{UpdateInput.Role}'");
-            // --- Modify the UpdateAsync call ---
 
-            // 1. Create the request object
+        ProceedUpdate:
+            if (Id == 0)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid User ID.");
+                return await Reload();
+            }
+
+            // 3. Send the complete request
             var updateRequest = new UpdateUserRequest
             {
                 FullName = UpdateInput.FullName,
                 Email = UpdateInput.Email,
                 Username = UpdateInput.Username,
                 Role = UpdateInput.Role,
-                IsActive = UpdateInput.IsActive // Pass the status
+                IsActive = UpdateInput.IsActive
             };
 
-            // 2. Only add password if user entered a new one
             if (!string.IsNullOrEmpty(UpdateInput.Password))
             {
                 updateRequest.Password = UpdateInput.Password;
             }
 
-            // 3. Send the complete request
             var ok = await _users.UpdateAsync(Id, updateRequest);
 
             if (!ok)
             {
                 ModelState.AddModelError(string.Empty, "Update failed.");
-                UpdateInput = new UpdateUserRequest(); // <-- NEW
+                UpdateInput = new UpdateUserRequest();
                 return await Reload();
             }
 
@@ -148,5 +171,5 @@ namespace HMS_Frontend.Pages
     }
 
     // ------- Inputs bound to Razor forms -------
-    
+
 }

@@ -1,305 +1,390 @@
 ﻿@page
-@model HMS_Frontend.Pages.ReceptionistModel
+@model HMS_Frontend.Pages.DashboardModel
 @{
-    Layout = "_Layout";
-    ViewData["Title"] = "Receptionist";
+    ViewData["Title"] = "Dashboard";
 }
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+    :root {
+        --bg: #1e293b;
+        --card: #334155cc;
+        --accent: #22d3ee;
+        --text: #f1f5f9;
+        --muted: #94a3b8;
+        --line: #334155;
+        --radius-xl: 18px;
+        --radius: 12px;
+        --shadow-md: 0 6px 20px rgba(0,0,0,.25);
+        --blur: saturate(140%) blur(10px)
+    }
 
-@section Styles {
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-    <style>
-        :root {
-            --bg: #0f172a;
-            --card: #0b1222e6;
-            --accent: #22d3ee;
-            --text: #e5e7eb;
-            --muted: #9ca3af;
-            --line: #1f2937;
-            --radius-xl: 18px;
-            --radius: 12px;
-            --shadow-md: 0 6px 20px rgba(0,0,0,.25);
-            --blur: saturate(140%) blur(10px)
+    html, body {
+        scroll-behavior: smooth
+    }
+
+    body {
+        margin: 0;
+        font-family: "Inter",sans-serif;
+        color: var(--text);
+        background: radial-gradient(1200px 600px at 10% -10%,#0ea5e944,transparent 60%),var(--bg);
+        min-height: 100vh
+    }
+
+    .app {
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        min-height: 100vh;
+        gap: 20px;
+        padding: 20px
+    }
+
+    .sidebar {
+        background: linear-gradient(180deg,#0b1222aa,#0b1222cc);
+        backdrop-filter: var(--blur);
+        border-radius: var(--radius-xl);
+        border: 1px solid #1f2a44;
+        padding: 20px 16px;
+        display: flex;
+        flex-direction: column;
+        box-shadow: var(--shadow-md)
+    }
+
+    .nav {
+        list-style: none;
+        margin: 0;
+        padding: 0
+    }
+
+        .nav li {
+            margin: 8px 0
         }
 
-        html, body {
-            scroll-behavior: smooth
-        }
-
-        body {
-            margin: 0;
-            font-family: "Inter",sans-serif;
-            color: var(--text);
-            background: radial-gradient(1200px 600px at 10% -10%,#0ea5e944,transparent 60%),var(--bg);
-            min-height: 100vh
-        }
-
-        .app {
-            display: grid;
-            grid-template-columns: 220px 1fr;
-            min-height: 100vh;
-            gap: 20px;
-            padding: 20px
-        }
-
-        .sidebar {
-            background: linear-gradient(180deg,#0b1222aa,#0b1222cc);
-            backdrop-filter: var(--blur);
-            border-radius: var(--radius-xl);
-            border: 1px solid #1f2a44;
-            padding: 20px 16px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: var(--shadow-md)
-        }
-
-        .nav {
-            list-style: none;
-            margin: 0;
-            padding: 0
-        }
-
-            .nav li {
-                margin: 8px 0
-            }
-
-            .nav a {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                text-decoration: none;
-                color: var(--text);
-                padding: 10px 12px;
-                border-radius: 10px;
-                border: 1px solid transparent;
-                transition: .2s
-            }
-
-                .nav a:hover {
-                    background: #16223a;
-                    border-color: #1b2a49
-                }
-
-                .nav a.active {
-                    background: #11213c;
-                    border-color: #1b2a49
-                }
-
-        .content {
-            display: flex;
-            flex-direction: column;
-            gap: 18px
-        }
-
-        .topbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between
-        }
-
-        .title {
-            font-size: 20px;
-            font-weight: 700
-        }
-
-        .btn {
-            background: var(--accent);
-            border: none;
-            padding: 10px 16px;
-            border-radius: 10px;
-            color: #031423;
-            font-weight: 600;
-            cursor: pointer;
-            transition: .15s
-        }
-
-            .btn:hover {
-                transform: translateY(-1px)
-            }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1.2fr .8fr;
-            gap: 18px
-        }
-
-        .card {
-            background: var(--card);
-            border: 1px solid #1f2a44;
-            border-radius: var(--radius-xl);
-            padding: 18px;
-            backdrop-filter: var(--blur)
-        }
-
-            .card h3 {
-                margin: 0 0 12px;
-                font-size: 16px
-            }
-
-        .field-flex {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border: 1px solid #20304e;
-            background: #0f1a2fcc;
-            border-radius: 14px;
-            padding: 6px 12px
-        }
-
-            .field-flex i {
-                color: #92a3c3;
-                font-size: 18px
-            }
-
-            .field-flex .input {
-                flex: 1;
-                border: none;
-                background: transparent;
-                outline: none;
-                color: var(--text)
-            }
-
-        .input::placeholder {
-            color: var(--muted)
-        }
-
-        .quick-list {
-            display: grid;
-            gap: 10px
-        }
-
-        .qa {
+        .nav a {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 12px;
-            border-radius: 14px;
-            border: 1px solid #1f2a44;
-            background: #0f1a2fcc;
-            transition: .18s;
-            cursor: pointer;
             text-decoration: none;
+            color: var(--text);
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            transition: .2s
+        }
+
+            .nav a:hover {
+                background: #5c6e8fcc;
+                border-color: #1b2a49
+            }
+
+            .nav a.active {
+                background: #5c6e8fcc;
+                border-color: #1b2a49
+            }
+
+        .nav button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text);
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            transition: .2s;
+            background: transparent;
+            width: 100%;
+            font-family: "Inter",sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: left;
+        }
+
+            .nav button:hover {
+                background: #5c6e8fcc;
+                border-color: #1b2a49
+            }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        gap: 18px
+    }
+
+    .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between
+    }
+
+    .title {
+        font-size: 20px;
+        font-weight: 700
+    }
+
+    .btn {
+        background: var(--accent);
+        border: none;
+        padding: 10px 16px;
+        border-radius: 10px;
+        color: #031423;
+        font-weight: 600;
+        cursor: pointer;
+        transition: .15s
+    }
+
+        .btn:hover {
+            transform: translateY(-1px)
+        }
+
+    .grid {
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+        gap: 18px
+    }
+
+    .card {
+        background: var(--card);
+        border: 1px solid #1f2a44;
+        border-radius: var(--radius-xl);
+        padding: 18px;
+        backdrop-filter: var(--blur)
+    }
+
+        .card h3 {
+            margin: 0 0 12px;
+            font-size: 16px
+        }
+
+    .field-flex {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid #20304e;
+        background: #5c6e8fcc;
+        border-radius: 14px;
+        padding: 6px 12px
+    }
+
+        .field-flex i {
+            color: #92a3c3;
+            font-size: 18px
+        }
+
+        .field-flex .input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            outline: none;
             color: var(--text)
         }
 
-            .qa:hover {
-                background: #11213ccc;
-                transform: translateY(-1px)
-            }
+    .input::placeholder {
+        color: var(--muted)
+    }
 
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 8px
+    .quick-list {
+        display: grid;
+        gap: 10px
+    }
+
+    .qa {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px;
+        border-radius: 14px;
+        border: 1px solid #1f2a44;
+        background: #5c6e8fcc;
+        transition: .18s;
+        cursor: pointer;
+        text-decoration: none;
+        color: var(--text)
+    }
+
+        .qa:hover {
+            background: #5d7297cc;
+            transform: translateY(-1px)
         }
 
-        thead th {
-            text-align: left;
-            font-size: 12px;
-            color: #aeb6c8;
-            font-weight: 700;
-            padding: 0 12px 2px
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 8px
+    }
+
+    thead th {
+        text-align: left;
+        font-size: 12px;
+        color: #aeb6c8;
+        font-weight: 700;
+        padding: 0 12px 2px
+    }
+
+    tbody tr {
+        background: #5c6e8fcc;
+        border: 1px solid #1f2a44
+    }
+
+    tbody td {
+        padding: 14px 12px
+    }
+
+        tbody td:first-child {
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px
         }
 
-        tbody tr {
-            background: #0f1a2f;
-            border: 1px solid #1f2a44
+        tbody td:last-child {
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px
         }
 
-        tbody td {
-            padding: 14px 12px
+    .cancel-btn {
+        background: transparent;
+        border: 1px solid #dc2626;
+        color: #f87171;
+        padding: 6px 12px;
+        border-radius: 10px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center
+    }
+
+        .cancel-btn:hover {
+            background: #7f1d1d
         }
 
-            tbody td:first-child {
-                border-top-left-radius: 12px;
-                border-bottom-left-radius: 12px
-            }
+    .text-danger {
+        color: #fca5a5;
+        font-size: .85rem
+    }
 
-            tbody td:last-child {
-                border-top-right-radius: 12px;
-                border-bottom-right-radius: 12px
-            }
+    /* Add Patient form layout */
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2,minmax(0,1fr));
+        gap: 12px
+    }
 
-        .cancel-btn {
-            background: transparent;
-            border: 1px solid #dc2626;
-            color: #f87171;
-            padding: 6px 12px;
-            border-radius: 10px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center
+        .form-grid .full {
+            grid-column: 1 / -1
         }
 
-            .cancel-btn:hover {
-                background: #7f1d1d
-            }
+    .form-label {
+        display: block;
+        font-size: .9rem;
+        margin: 8px 4px
+    }
 
-        .text-danger {
-            color: #fca5a5;
-            font-size: .85rem
+    .form-control {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid #20304e;
+        background: #0f1a2fcc;
+        color: var(--text);
+        outline: none
+    }
+
+        .form-control:focus {
+            border-color: #1b2a49
         }
 
-        /* Add Patient form layout */
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2,minmax(0,1fr));
-            gap: 12px
+        .form-control[readonly] {
+            background: #334155; /* Lighter slate for better readability */
+            color: #e2e8f0;
+            cursor: not-allowed;
         }
+</style>
 
-            .form-grid .full {
-                grid-column: 1 / -1
-            }
-
-        .form-label {
-            display: block;
-            font-size: .9rem;
-            margin: 8px 4px
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 10px 12px;
-            border-radius: 12px;
-            border: 1px solid #20304e;
-            background: #0f1a2fcc;
-            color: var(--text);
-            outline: none
-        }
-
-            .form-control:focus {
-                border-color: #1b2a49
-            }
-    </style>
-}
 
 <div class="app">
     <aside class="sidebar" aria-label="Primary">
         <ul class="nav">
-            <li><a class="active" href="#"><i class="ri-home-5-line" aria-hidden="true"></i>Home</a></li>
-            <li><a href="#"><i class="ri-calendar-event-line" aria-hidden="true"></i>Appointments</a></li>
-            <li><a href="#"><i class="ri-team-line" aria-hidden="true"></i>Patients</a></li>
-            <li><a href="#"><i class="ri-calendar-2-line" aria-hidden="true"></i>Calendar</a></li>
+            <li><a class="active" asp-page="/Dashboard"><i class="ri-home-5-line" aria-hidden="true"></i>Home</a></li>
+            <li><a asp-page="/Appointments/Index"><i class="ri-calendar-event-line" aria-hidden="true"></i>Appointments</a></li>
+            <li><a asp-page="/Patients/Index"><i class="ri-team-line" aria-hidden="true"></i>Patients</a></li>
+            <li>
+                <form method="post" asp-page="/Account/Logout">
+                    <button type="submit">
+                        <i class="ri-logout-box-line" aria-hidden="true"></i>Sign Out
+                    </button>
+                </form>
+            </li>
             <!-- Messages and Settings removed -->
         </ul>
     </aside>
 
     <main class="content">
         <div class="topbar">
-            <div class="title">Receptionist Home</div>
-            <button class="btn" type="button" onclick="document.getElementById('Input_Name')?.focus()">New Appointment</button>
+            <div class="title">Welcome <span style="text-transform: capitalize;">@(User.FindFirst("FullName")?.Value ?? User.Identity?.Name)</span></div>
         </div>
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div style="padding: 12px; background: #065f46; color: #ecfdf5; border-radius: 12px; border: 1px solid #047857; margin-bottom: 18px;">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
+        @if (!ModelState.IsValid)
+        {
+            <div style="padding: 12px; background: #7f1d1d; color: #fca5a5; border-radius: 12px; border: 1px solid #991b1b; margin-bottom: 18px;">
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </div>
+        }
 
         <section class="grid">
             <div class="card">
                 <h3>Patients</h3>
-                <form method="get" asp-page="./Receptionist">
+                <form method="get" asp-page="./Dashboard">
                     <div class="field field-flex">
                         <i class="ri-search-line" aria-hidden="true"></i>
-                        <input type="text" class="input" placeholder="Search patients..." />
+                        <input type="text" class="input" asp-for="SearchQuery" placeholder="Search patients..." />
                     </div>
                 </form>
+                @if (Model.SearchResults != null && Model.SearchResults.Any())
+                {
+                    <div style="margin-top: 12px; max-height: 200px; overflow-y: auto;">
+                        <table style="width: 100%; font-size: 0.9rem; color: #e5e7eb;">
+                            <thead>
+                                <tr>
+                                    <th style="color: #9ca3af;">Name</th>
+                                    <th style="color: #9ca3af;">DOB</th>
+                                    <th style="color: #9ca3af;">Phone</th>
+                                    <th style="color: #9ca3af;">Email</th>
+                                    <th style="color: #9ca3af;">Address</th>
+                                    <th style="color: #9ca3af;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var p in Model.SearchResults)
+                                {
+                                    <tr>
+                                        <td style="padding: 8px;">@p.FirstName @p.LastName</td>
+                                        <td style="padding: 8px;">@p.DateOfBirth.ToShortDateString()</td>
+                                        <td style="padding: 8px;">@p.Phone</td>
+                                        <td style="padding: 8px;">@p.Email</td>
+                                        <td style="padding: 8px;">@p.Address</td>
+                                        <td style="padding: 8px;">
+                                        <td style="padding: 8px;">
+                                            <button type="button" class="btn" style="padding: 4px 8px; font-size: 0.8rem;"
+                                                    onclick="selectPatient(@p.Id, '@p.FirstName @p.LastName')">
+                                                Schedule
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else if (!string.IsNullOrEmpty(Model.SearchQuery))
+                {
+                    <p style="color: #9ca3af; margin-top: 10px; font-size: 0.9rem;">No patients found.</p>
+                }
             </div>
 
             <div class="card">
@@ -308,7 +393,7 @@
                     <a class="qa" id="go-add-patient" href="#add-patient">
                         <i class="ri-user-add-line" aria-hidden="true"></i><span>Add Patient</span>
                     </a>
-                    <a class="qa" href="#schedule-for-new">
+                    <a class="qa" href="#schedule-appointment">
                         <i class="ri-calendar-check-line" aria-hidden="true"></i><span>Schedule Appointment</span>
                     </a>
                 </div>
@@ -317,67 +402,206 @@
 
         <section class="card schedule" id="schedule-today">
             <h3>Today's Schedule</h3>
-            <table aria-label="Today schedule">
+            <table aria-label="Today schedule" style="width: 100%; font-size: 0.9rem; color: #e5e7eb;">
                 <thead>
                     <tr>
-                        <th>Time</th>
-                        <th>Patient</th>
-                        <th>Reason</th>
-                        <th>Status</th>
-                        <th>Action</th>
+                        <th style="color: #9ca3af;">Time</th>
+                        <th style="color: #9ca3af;">Patient</th>
+                        <th style="color: #9ca3af;">Reason</th>
+                        <th style="color: #9ca3af;">Status</th>
+                        <th style="color: #9ca3af;">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- rows go here -->
+                    @if (Model.Appointments != null && Model.Appointments.Any())
+                    {
+                        foreach (var appt in Model.Appointments)
+                        {
+                            <tr>
+                                <td style="padding: 12px;">@appt.StartsAt.ToString("HH:mm")</td>
+                                <td style="padding: 12px;">
+                                    @if (appt.Patient != null)
+                                    {
+                                        <span>@appt.Patient.FirstName @appt.Patient.LastName</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="color: #fca5a5;">Patient #@appt.PatientId (Not Found)</span>
+                                    }
+                                </td>
+                                <td style="padding: 12px;">@appt.Reason</td>
+                                <td style="padding: 12px;">
+                                    <span style="padding: 4px 8px; border-radius: 99px; font-size: 0.8rem; background: #1e293b; color: #cbd5e1; border: 1px solid #334155;">
+                                        @appt.Status
+                                    </span>
+                                </td>
+                                <td style="padding: 12px;">
+                                    <div style="display: flex; gap: 8px;">
+                                        <button type="button" class="btn" style="padding: 6px 12px; font-size: 0.85rem; background-color: #f59e0b; color: #0f172a;"
+                                                onclick="openEditAppointmentModal(@appt.Id, @appt.PatientId, '@(appt.Patient?.FirstName + " " + appt.Patient?.LastName)', '@appt.StartsAt.ToString("yyyy-MM-ddTHH:mm")', @appt.DurationMinutes, '@appt.Reason')">
+                                            <i class="ri-edit-line"></i> Edit
+                                        </button>
+                                        <form method="post" asp-page-handler="CancelAppointment" asp-route-id="@appt.Id" onsubmit="return confirm('Are you sure you want to cancel this appointment?');">
+                                            <button class="btn" style="padding: 6px 12px; font-size: 0.85rem; background-color: #ef4444; color: white;">
+                                                <i class="ri-close-circle-line"></i> Cancel
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: #9ca3af; padding: 20px;">
+                                No appointments scheduled for today.
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
-            <p style="color:#9ca3af;margin:0">No appointments scheduled for today.</p>
         </section>
 
+        <!-- ================= Schedule Appointment ================= -->
+        <section class="card" id="schedule-appointment" style="margin-bottom: 20px;">
+            <h3>Schedule Appointment</h3>
+            <p class="text-muted" style="font-size: 0.9rem; color: #9ca3af;">
+                <i class="ri-information-line"></i> Clinic Hours: 08:00 AM – 05:00 PM
+            </p>
+            <form method="post" asp-page-handler="ScheduleAppointment">
+                <div class="form-grid">
+                    <!-- Hidden Patient ID, populated via JS -->
+                    <input type="hidden" asp-for="NewAppointment.PatientId" id="Schedule_PatientId" />
+
+                    <div>
+                        <label class="form-label">Patient</label>
+                        <input id="Schedule_PatientName" class="form-control" type="text" readonly placeholder="Select a patient from search results" style="background-color: #263757cc; cursor: not-allowed; color: #f1f5f9;" />
+                    </div>
+
+                    <!-- Doctor ID removed -->
+                    <div>
+                        <label class="form-label" asp-for="NewAppointment.StartsAt">Date & Time</label>
+                        <input asp-for="NewAppointment.StartsAt" class="form-control" type="datetime-local" required />
+                    </div>
+                    <div>
+                        <label class="form-label" asp-for="NewAppointment.DurationMinutes">Duration (Minutes)</label>
+                        <select asp-for="NewAppointment.DurationMinutes" class="form-control">
+                            <option value="15">15 Minutes</option>
+                            <option value="30">30 Minutes</option>
+                            <option value="45">45 Minutes</option>
+                            <option value="60">1 Hour</option>
+                        </select>
+                    </div>
+                    <div class="full">
+                        <label class="form-label" asp-for="NewAppointment.Reason">Reason</label>
+                        <textarea asp-for="NewAppointment.Reason" class="form-control" rows="2" placeholder="Reason for visit"></textarea>
+                    </div>
+                </div>
+                <div style="margin-top:14px;">
+                    <button class="btn" type="submit"><i class="ri-calendar-check-line"></i> Schedule</button>
+                </div>
+            </form>
+        </section>
+
+        </section>
+
+        <!-- ================= Edit Appointment Modal ================= -->
+        <div id="edit-appointment-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+            <div class="card" style="width: 100%; max-width: 500px; margin: 20px;">
+                <h3>Edit Appointment</h3>
+                <div asp-validation-summary="All" class="text-danger" style="margin-bottom: 15px; font-size: 0.9rem;"></div>
+                <form method="post" asp-page-handler="EditAppointment">
+                    <input type="hidden" asp-for="EditAppointmentId" id="Edit_AppointmentId" />
+                    <input type="hidden" asp-for="EditAppointment.PatientId" id="Edit_PatientId" />
+
+                    <div class="form-grid">
+                        <div class="full">
+                            <label class="form-label">Patient</label>
+                            <input id="Edit_PatientName" class="form-control" type="text" readonly style="background-color: #5c6e8fcc; cursor: not-allowed;" />
+                        </div>
+
+                        <!-- Doctor ID removed -->
+
+                        <div>
+                            <label class="form-label" asp-for="EditAppointment.StartsAt">Date & Time</label>
+                            <input asp-for="EditAppointment.StartsAt" id="Edit_StartsAt" class="form-control" type="datetime-local" required />
+                        </div>
+
+                        <div>
+                            <label class="form-label" asp-for="EditAppointment.DurationMinutes">Duration</label>
+                            <select asp-for="EditAppointment.DurationMinutes" id="Edit_DurationMinutes" class="form-control">
+                                <option value="15">15 Minutes</option>
+                                <option value="30">30 Minutes</option>
+                                <option value="45">45 Minutes</option>
+                                <option value="60">1 Hour</option>
+                            </select>
+                        </div>
+
+                        <div class="full">
+                            <label class="form-label" asp-for="EditAppointment.Reason">Reason</label>
+                            <textarea asp-for="EditAppointment.Reason" id="Edit_Reason" class="form-control" rows="2"></textarea>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                        <button type="button" class="cancel-btn" onclick="document.getElementById('edit-appointment-modal').style.display='none'">Cancel</button>
+                        <button type="submit" class="btn">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- ========================================================== -->
         <!-- ================= Add Patient (BOTTOM) ================= -->
         <section class="card" id="add-patient" aria-labelledby="add-patient-title">
-            <h3 id="add-patient-title">Add Patient</h3>
+            <h3 id="add-patient-title">Add New Patient</h3>
 
             <form method="post" asp-page-handler="AddPatient">
                 <div class="form-grid">
                     <div>
-                        <label class="form-label" for="Input_Name">Name</label>
-                        <input id="Input_Name" name="Name" class="form-control" type="text" placeholder="Full name" required />
+                        <label class="form-label" asp-for="Input.FirstName">First Name</label>
+                        <input asp-for="Input.FirstName" id="Input_FirstName" class="form-control" placeholder="John" required />
                     </div>
 
                     <div>
-                        <label class="form-label" for="Input_DOB">Date of Birth</label>
-                        <input id="Input_DOB" name="DOB" class="form-control" type="date" required />
+                        <label class="form-label" asp-for="Input.LastName">Last Name</label>
+                        <input asp-for="Input.LastName" class="form-control" placeholder="Doe" required />
+                    </div>
+
+                    <div>
+                        <label class="form-label" asp-for="Input.DateOfBirth">Date of Birth</label>
+                        <input asp-for="Input.DateOfBirth" id="Input_DOB" class="form-control" type="date" required />
                     </div>
 
                     <div>
                         <label class="form-label" for="Input_Age">Age</label>
-                        <input id="Input_Age" name="Age" class="form-control" type="number" inputmode="numeric" min="0" readonly />
+                        <input id="Input_Age" class="form-control" type="number" inputmode="numeric" min="0" readonly />
                     </div>
 
                     <div>
-                        <label class="form-label" for="Input_Gender">Gender</label>
-                        <select id="Input_Gender" name="Gender" class="form-control" required>
-                            <option value="" selected disabled>Choose gender</option>
-                            <option>Male</option>
-                            <option>Female</option>
-                            <option>Other</option>
-                            <option>Prefer not to say</option>
-                        </select>
+                        <label class="form-label" asp-for="Input.Phone">Phone Number</label>
+                        <input asp-for="Input.Phone" class="form-control" placeholder="(555) 123-4567" />
+                    </div>
+
+                    <div>
+                        <label class="form-label" asp-for="Input.Email">Email Address</label>
+                        <input asp-for="Input.Email" type="email" class="form-control" placeholder="john.doe@example.com" />
                     </div>
 
                     <div class="full">
-                        <label class="form-label" for="Input_Address">Address</label>
-                        <textarea id="Input_Address" name="Address" class="form-control" rows="3" placeholder="Street, City, State, ZIP"></textarea>
+                        <label class="form-label" asp-for="Input.Address">Address</label>
+                        <textarea asp-for="Input.Address" id="Input_Address" class="form-control" rows="3" placeholder="Street, City, State, ZIP"></textarea>
                     </div>
                 </div>
 
                 <div style="margin-top:14px;display:flex;gap:10px">
-                    <button class="btn" type="submit"><i class="ri-save-3-line" aria-hidden="true"></i> Save Patient</button>
+                    <button class="btn" type="submit"><i class="ri-user-add-line" aria-hidden="true"></i> Create Patient</button>
                     <a class="cancel-btn" href="#top">Cancel</a>
                 </div>
             </form>
         </section>
+        </section>
+
         <!-- ======================================================== -->
 
     </main>
@@ -415,7 +639,7 @@
                 e.preventDefault();
                 target.scrollIntoView({behavior:'smooth', block:'start'});
                 setTimeout(function(){
-                  document.getElementById('Input_Name')?.focus();
+                  document.getElementById('Input_FirstName')?.focus();
                 }, 350);
               }
             });
@@ -425,5 +649,46 @@
           var schedCard=document.getElementById('schedule-for-new');
           if(schedCard){schedCard.scrollIntoView({behavior:'smooth'});}
         })();
+
+        function selectPatient(id, name) {
+            var idInput = document.getElementById('Schedule_PatientId');
+            var nameInput = document.getElementById('Schedule_PatientName');
+            var formSection = document.getElementById('schedule-appointment');
+
+            if (idInput) idInput.value = id;
+            if (nameInput) nameInput.value = name;
+
+            if (formSection) {
+                formSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Briefly highlight the name input to show it changed
+                if (nameInput) {
+                    nameInput.style.borderColor = '#22d3ee';
+                    setTimeout(() => nameInput.style.borderColor = '', 1000);
+                }
+            }
+        }
+
+        function openEditAppointmentModal(id, patientId, patientName, startsAt, duration, reason) {
+            document.getElementById('Edit_AppointmentId').value = id;
+            document.getElementById('Edit_PatientId').value = patientId;
+            document.getElementById('Edit_PatientName').value = patientName;
+            // document.getElementById('Edit_StaffUserId').value = staffId; // Removed
+            document.getElementById('Edit_StartsAt').value = startsAt;
+            document.getElementById('Edit_DurationMinutes').value = duration;
+            document.getElementById('Edit_Reason').value = reason;
+
+            var modal = document.getElementById('edit-appointment-modal');
+            modal.style.display = 'flex';
+        }
+
+        @if (ViewData["ShowEditModal"] as bool? == true)
+        {
+                <text>
+                document.addEventListener("DOMContentLoaded", function() {
+                    var modal = document.getElementById('edit-appointment-modal');
+                    if (modal) modal.style.display = 'flex';
+                });
+                </text>
+        }
     </script>
 }
