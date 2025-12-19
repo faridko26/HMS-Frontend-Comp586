@@ -45,7 +45,31 @@ namespace HMS_Frontend.Pages
 
         private async Task LoadDataAsync()
         {
-            Appointments = await _api.GetAppointmentsAsync(DateTime.Today);
+            // Fetch ALL appointments (pass null to get everything)
+            var allAppointments = await _api.GetAppointmentsAsync(null);
+
+            // Determine "Today" in Pacific Time (PST/PDT)
+            DateTime todayPst;
+            try
+            {
+                // Try Linux/Mac ID first (Render uses Linux)
+                var pstZone = TimeZoneInfo.FindSystemTimeZoneById("America/Los_Angeles");
+                todayPst = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, pstZone).Date;
+            }
+            catch (TimeZoneNotFoundException)
+            {
+                // Fallback to Windows ID
+                var pstZone = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
+                todayPst = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, pstZone).Date;
+            }
+
+            // Filter appointments where the Face Value date matches Today in PST
+            // We use .DateTime.Date to ignore the offset and just look at the "written" date
+            Appointments = allAppointments
+                .Where(a => a.StartsAt.DateTime.Date == todayPst)
+                .OrderBy(a => a.StartsAt)
+                .ToList();
+
             StaffMembers = await _api.GetStaffAsync();
 
             var username = User.Identity?.Name;
