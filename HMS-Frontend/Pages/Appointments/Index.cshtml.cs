@@ -31,8 +31,19 @@ namespace HMS_Frontend.Pages.Appointments
 
         public async Task OnGetAsync()
         {
-            var now = DateTime.Now;
-            NewAppointment.StartsAt = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0);
+            // Determine PST
+            TimeZoneInfo pstZone;
+            try
+            {
+                pstZone = TimeZoneInfo.FindSystemTimeZoneById("America/Los_Angeles");
+            }
+            catch (TimeZoneNotFoundException)
+            {
+                pstZone = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
+            }
+
+            var nowPst = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, pstZone);
+            NewAppointment.StartsAt = new DateTime(nowPst.Year, nowPst.Month, nowPst.Day, nowPst.Hour, nowPst.Minute, 0);
             await LoadDataAsync();
         }
 
