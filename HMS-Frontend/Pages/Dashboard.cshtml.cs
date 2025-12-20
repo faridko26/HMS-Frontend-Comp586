@@ -172,8 +172,8 @@ namespace HMS_Frontend.Pages
             // Create DateTimeOffset with PST offset
             var pstTime = new DateTimeOffset(faceValue, pstOffset);
 
-            // Convert to UTC for storage
-            NewAppointment.StartsAt = pstTime.ToUniversalTime();
+            // Send with PST offset so backend sees the correct "Wall Clock" time (e.g. 14:00 instead of 22:00)
+            NewAppointment.StartsAt = pstTime;
 
             var result = await _api.CreateAppointmentAsync(NewAppointment);
             if (result.Success)
@@ -231,8 +231,8 @@ namespace HMS_Frontend.Pages
             // Create DateTimeOffset with PST offset
             var pstTime = new DateTimeOffset(faceValue, pstOffset);
 
-            // Convert to UTC for storage
-            EditAppointment.StartsAt = pstTime.ToUniversalTime();
+            // Send with PST offset so backend sees the correct "Wall Clock" time
+            EditAppointment.StartsAt = pstTime;
 
             // Ensure ID is set in the body as well
             EditAppointment.Id = EditAppointmentId;
