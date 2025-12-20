@@ -49,26 +49,31 @@ namespace HMS_Frontend.Pages
             var allAppointments = await _api.GetAppointmentsAsync(null);
 
             // Determine "Today" in Pacific Time (PST/PDT)
-            DateTime todayPst;
+            TimeZoneInfo pstZone;
             try
             {
                 // Try Linux/Mac ID first (Render uses Linux)
-                var pstZone = TimeZoneInfo.FindSystemTimeZoneById("America/Los_Angeles");
-                todayPst = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, pstZone).Date;
+                pstZone = TimeZoneInfo.FindSystemTimeZoneById("America/Los_Angeles");
             }
             catch (TimeZoneNotFoundException)
             {
                 // Fallback to Windows ID
-                var pstZone = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
-                todayPst = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, pstZone).Date;
+                pstZone = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
             }
 
+            var todayPst = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, pstZone).Date;
+
             // Filter appointments where the Face Value date matches Today in PST
-            // We use .DateTime.Date to ignore the offset and just look at the "written" date
             Appointments = allAppointments
                 .Where(a => a.StartsAt.DateTime.Date == todayPst)
                 .OrderBy(a => a.StartsAt)
                 .ToList();
+
+            // Convert UTC times to PST for display
+            foreach (var appt in Appointments)
+            {
+                appt.StartsAt = TimeZoneInfo.ConvertTime(appt.StartsAt, pstZone);
+            }
 
             StaffMembers = await _api.GetStaffAsync();
 

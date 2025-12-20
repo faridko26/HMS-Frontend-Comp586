@@ -44,6 +44,22 @@ namespace HMS_Frontend.Pages.Appointments
             // Sort by date descending (newest first)
             Appointments = Appointments.OrderByDescending(a => a.StartsAt).ToList();
 
+            // Convert to PST for display
+            TimeZoneInfo pstZone;
+            try
+            {
+                pstZone = TimeZoneInfo.FindSystemTimeZoneById("America/Los_Angeles");
+            }
+            catch (TimeZoneNotFoundException)
+            {
+                pstZone = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
+            }
+
+            foreach (var appt in Appointments)
+            {
+                appt.StartsAt = TimeZoneInfo.ConvertTime(appt.StartsAt, pstZone);
+            }
+
             // Fetch patients for dropdown
             Patients = await _api.GetAllPatientsAsync();
 
