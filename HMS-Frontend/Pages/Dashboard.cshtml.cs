@@ -153,9 +153,27 @@ namespace HMS_Frontend.Pages
 
         public async Task<IActionResult> OnPostScheduleAppointmentAsync()
         {
-            // Force the offset to be UTC (Zero). 
+            // The input comes in as "Face Value" (e.g. 2:13 PM) but with Server's Offset (UTC on Render).
+            // We need to interpret this Face Value as PST, then convert to UTC.
             var faceValue = NewAppointment.StartsAt.DateTime;
-            NewAppointment.StartsAt = new DateTimeOffset(faceValue, TimeSpan.Zero);
+
+            TimeZoneInfo pstZone;
+            try
+            {
+                pstZone = TimeZoneInfo.FindSystemTimeZoneById("America/Los_Angeles");
+            }
+            catch (TimeZoneNotFoundException)
+            {
+                pstZone = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
+            }
+
+            // Create offset for this time in PST
+            var pstOffset = pstZone.GetUtcOffset(faceValue);
+            // Create DateTimeOffset with PST offset
+            var pstTime = new DateTimeOffset(faceValue, pstOffset);
+
+            // Convert to UTC for storage
+            NewAppointment.StartsAt = pstTime.ToUniversalTime();
 
             var result = await _api.CreateAppointmentAsync(NewAppointment);
             if (result.Success)
@@ -194,9 +212,27 @@ namespace HMS_Frontend.Pages
                 return Page();
             }
 
-            // Force the offset to be UTC (Zero).
+            // The input comes in as "Face Value" (e.g. 2:13 PM) but with Server's Offset (UTC on Render).
+            // We need to interpret this Face Value as PST, then convert to UTC.
             var faceValue = EditAppointment.StartsAt.DateTime;
-            EditAppointment.StartsAt = new DateTimeOffset(faceValue, TimeSpan.Zero);
+
+            TimeZoneInfo pstZone;
+            try
+            {
+                pstZone = TimeZoneInfo.FindSystemTimeZoneById("America/Los_Angeles");
+            }
+            catch (TimeZoneNotFoundException)
+            {
+                pstZone = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
+            }
+
+            // Create offset for this time in PST
+            var pstOffset = pstZone.GetUtcOffset(faceValue);
+            // Create DateTimeOffset with PST offset
+            var pstTime = new DateTimeOffset(faceValue, pstOffset);
+
+            // Convert to UTC for storage
+            EditAppointment.StartsAt = pstTime.ToUniversalTime();
 
             // Ensure ID is set in the body as well
             EditAppointment.Id = EditAppointmentId;
